@@ -93,7 +93,6 @@ synapse/
 └── server/                    # Backend source
     ├── index.js               # Express app entry, DB connect, route mount
     ├── db.js                  # Mongoose connection helper
-    ├── .env                   # Secrets — never commit this file
     ├── package.json           # Backend dependencies
     │
     ├── middleware/
