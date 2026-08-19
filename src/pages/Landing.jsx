@@ -216,11 +216,7 @@ export default function Landing() {
           <div className="landing-cta-badge">✦ Start for free today</div>
           <h2>
             Ready to think like the{" "}
-            <em style={{
-              fontStyle: "italic",
-              background: "linear-gradient(135deg,#a78bfa,#60a5fa)",
-              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-            }}>best</em>?
+            <em className="lh-grad-text" style={{ fontStyle: "italic" }}>best</em>?
           </h2>
           <p>Create your free account and start your first collection in under a minute. No credit card required.</p>
           <div className="landing-cta-actions">
