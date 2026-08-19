@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import MarkdownRenderer from "../components/MarkdownRenderer";
 import "../styles/global.css";
+import API_URL from "../config";
 
 export default function CollectionDetail() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ export default function CollectionDetail() {
 
   useEffect(() => {
     // Fetch collection name from the collections list
-    authAxios({ method: "get", url: "http://localhost:5000/api/collections" })
+    authAxios({ method: "get", url: `${API_URL}/api/collections` })
       .then((res) => {
         const col = res.data.find((c) => c._id === id);
         if (col) setColName(col.name);
@@ -28,7 +29,7 @@ export default function CollectionDetail() {
       .catch(() => {});
 
     // Fetch reviews in this collection
-    authAxios({ method: "get", url: `http://localhost:5000/api/reviews/${id}` })
+    authAxios({ method: "get", url: `${API_URL}/api/reviews/${id}` })
       .then((res) => setReviews(res.data))
       .catch(() => setError("Failed to load reviews."))
       .finally(() => setLoading(false));

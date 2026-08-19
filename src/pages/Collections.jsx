@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import "../styles/global.css";
+import API_URL from "../config";
 
 const ICONS = ["📁","🐛","⚡","🔥","🌊","🔮","🎯","💡"];
 
@@ -20,7 +21,7 @@ export default function Collections() {
 
   useEffect(() => {
     if (!token) return;
-    authAxios({ method: "get", url: "http://localhost:5000/api/collections" })
+    authAxios({ method: "get", url: `${API_URL}/api/collections` })
       .then((res) => setCollections(res.data))
       .catch(() => setError("Failed to load collections"))
       .finally(() => setLoading(false));
@@ -30,7 +31,7 @@ export default function Collections() {
     e.preventDefault(); if (!name.trim()) return;
     try {
       const res = await authAxios({
-        method:"post", url:"http://localhost:5000/api/collections",
+        method:"post", url:`${API_URL}/api/collections`,
         data:{ name:name.trim(), desc:desc.trim() },
       });
       setCollections((prev) => [res.data, ...prev]);
@@ -40,7 +41,7 @@ export default function Collections() {
 
   const handleDelete = async (id) => {
     try {
-      await authAxios({ method:"delete", url:`http://localhost:5000/api/collections/${id}` });
+      await authAxios({ method:"delete", url:`${API_URL}/api/collections/${id}` });
       setCollections((prev) => prev.filter((c) => c._id !== id));
     } catch { setError("Failed to delete"); }
   };

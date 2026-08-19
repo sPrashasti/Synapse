@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import MarkdownRenderer from "../components/MarkdownRenderer";
 import "../styles/global.css";
+import API_URL from "../config";
 
 export default function Reviewer() {
   const { token, authAxios } = useAuth();
@@ -19,7 +20,7 @@ export default function Reviewer() {
 
   useEffect(() => {
     if (!token) return;
-    authAxios({ method: "get", url: "http://localhost:5000/api/collections" })
+    authAxios({ method: "get", url: `${API_URL}/api/collections` })
       .then((res) => setCollections(res.data)).catch(() => {});
   }, [token]);
 
@@ -27,7 +28,7 @@ export default function Reviewer() {
     if (!code.trim()) return;
     setLoading(true); setError(""); setResponse(""); setSaved(false);
     try {
-      const res = await axios.post("http://localhost:5000/review", { code });
+      const res = await axios.post(`${API_URL}/review`, { code });
       setResponse(res.data.review);
       if (token) setShowSavePanel(true);
     } catch {
@@ -40,7 +41,7 @@ export default function Reviewer() {
     setSaving(true);
     try {
       await authAxios({
-        method: "post", url: "http://localhost:5000/api/reviews/save",
+        method: "post", url: `${API_URL}/api/reviews/save`,
         data: { code, review: response, collectionId: selectedCol || null },
       });
       setSaved(true); setShowSavePanel(false);

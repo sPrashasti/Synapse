@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import "../styles/global.css";
+import API_URL from "../config";
 
 /* ── All local bugs ── */
 const ALL_BUGS = [
@@ -168,7 +169,7 @@ export default function Library() {
     if (e.key !== "Enter" || !search.trim()) return;
     setWebLoading(true); setWebError(""); setWebResults(null); setWebQuery(search.trim());
     try {
-      const res = await axios.get(`http://localhost:5000/api/search?q=${encodeURIComponent(search.trim())}`);
+      const res = await axios.get(`${API_URL}/api/search?q=${encodeURIComponent(search.trim())}`);
       setWebResults(res.data);
     } catch {
       setWebError("Search failed. Make sure the server is running.");
