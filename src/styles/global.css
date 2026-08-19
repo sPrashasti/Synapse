@@ -272,7 +272,7 @@ body {
 }
 .navbar-links a:hover {
   color: var(--text);
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.05);
 }
 .navbar-links a.active {
   color: var(--text);
@@ -294,7 +294,7 @@ body {
 }
 .nav-login:hover {
   color: var(--text);
-  background: rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.05);
 }
 
 /* ── Navbar responsive ── */
@@ -1013,3 +1013,104 @@ body {
   .modal-card { padding: 28px 20px; }
   .analysis-modal-card { padding: 28px 20px; }
 }
+
+/* ════════════════════════════════════════
+   LIGHT MODE — TARGETED COLOUR FIXES
+   (Dark mode is untouched)
+════════════════════════════════════════ */
+[data-theme="light"] {
+
+  /* ── Navbar hover (was white/5% — invisible on light bg) ── */
+  .navbar-links a:hover,
+  .nav-login:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--text);
+  }
+  .navbar-links a.active {
+    background: rgba(109, 40, 217, 0.10);
+    color: var(--purple-deep);
+  }
+
+  /* ── Tag pills — readable purple on light bg ── */
+  .tag-pill {
+    background: rgba(109, 40, 217, 0.10);
+    color: var(--purple-deep);
+    border-color: rgba(109, 40, 217, 0.20);
+  }
+  .tag-pill.difficulty {
+    background: rgba(79, 70, 229, 0.08);
+    color: var(--blue);
+    border-color: rgba(79, 70, 229, 0.18);
+  }
+
+  /* ── Filter tags ── */
+  .filter-tag {
+    color: #334155;
+    background: #ffffff;
+    border-color: rgba(15, 23, 42, 0.14);
+  }
+  .filter-tag:hover {
+    background: rgba(109, 40, 217, 0.07);
+    color: var(--purple-deep);
+    border-color: var(--purple);
+  }
+
+  /* ── Bug cards — body text legible ── */
+  .bug-card h3   { color: #0f172a; }
+  .bug-card p    { color: #334155; }
+  .view-analysis { color: var(--purple); }
+  .view-analysis:hover { color: var(--purple-deep); }
+
+  /* ── Library hero search text ── */
+  .library-hero h1 { color: #0f172a; }
+  .library-hero p  { color: #475569; }
+
+  /* ── Search bar ── */
+  .search-bar input { color: #0f172a; }
+  .search-bar input::placeholder { color: #94a3b8; }
+  .search-bar svg { color: #64748b; }
+
+  /* ── Collection cards ── */
+  .collection-card h3 { color: #0f172a; }
+  .collection-card p  { color: #475569; }
+  .collection-count   { color: #64748b; }
+
+  /* ── Modal code block (was dark on light bg) ── */
+  .modal-code {
+    background: #f1f5f9;
+    border-color: rgba(15, 23, 42, 0.12);
+    color: #5b21b6;
+  }
+
+  /* ── Modal text ── */
+  .modal-title  { color: #0f172a; }
+  .modal-desc   { color: #475569; }
+  .modal-section p { color: #475569; }
+  .modal-section h4 { color: var(--purple); }
+
+  /* ── Panel title & review text (Reviewer page) ── */
+  .panel-title    { color: #0f172a; }
+  .review-content { color: #1e293b; }
+  .review-content h3 { color: #0f172a; }
+  .review-empty   { color: #94a3b8; }
+
+  /* ── Code textarea ── */
+  .code-textarea {
+    color: #1e293b;
+    background: #f8fafc;
+  }
+  .code-textarea::placeholder { color: #94a3b8; }
+
+  /* ── Collections header ── */
+  .collections-header h1 { color: #0f172a; }
+
+  /* ── Auth pages ── */
+  .auth-card h2      { color: #0f172a; }
+  .auth-card .auth-sub { color: #475569; }
+  .form-field label  { color: #475569; }
+  .form-field input  { color: #0f172a; background: #ffffff; }
+  .form-field input::placeholder { color: #94a3b8; }
+  .auth-footer       { color: #475569; }
+  .auth-footer a     { color: var(--purple); }
+  .auth-footer a:hover { color: var(--purple-deep); }
+}
