@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../components/Navbar";
 import "../styles/global.css";
 import API_URL from "../config";
+import { useTheme } from "../context/ThemeContext";
 
 /* ── All local bugs ── */
 const ALL_BUGS = [
@@ -83,23 +84,24 @@ const ALL_BUGS = [
 const ALL_TAGS = ["All","React","Database","JavaScript","Node.js","Networking","General","CSS"];
 
 /* ── Web result card ── */
-function WebResultCard({ item }) {
+function WebResultCard({ item, isLight: L }) {
   return (
     <a href={item.url} target="_blank" rel="noopener noreferrer"
       style={{ textDecoration: "none", display: "block" }}>
       <div style={{
-        background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.09)",
+        background: L ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.04)",
+        border: L ? "1px solid rgba(0,0,0,0.09)" : "1px solid rgba(255,255,255,0.09)",
         borderRadius: "14px", padding: "18px 20px", cursor: "pointer",
         transition: "all .2s",
       }}
         onMouseEnter={e => {
-          e.currentTarget.style.borderColor = "rgba(167,139,250,0.4)";
-          e.currentTarget.style.background  = "rgba(255,255,255,0.07)";
+          e.currentTarget.style.borderColor = L ? "rgba(109,40,217,0.35)" : "rgba(167,139,250,0.4)";
+          e.currentTarget.style.background  = L ? "rgba(109,40,217,0.06)" : "rgba(255,255,255,0.07)";
           e.currentTarget.style.transform   = "translateY(-2px)";
         }}
         onMouseLeave={e => {
-          e.currentTarget.style.borderColor = "rgba(255,255,255,0.09)";
-          e.currentTarget.style.background  = "rgba(255,255,255,0.04)";
+          e.currentTarget.style.borderColor = L ? "rgba(0,0,0,0.09)" : "rgba(255,255,255,0.09)";
+          e.currentTarget.style.background  = L ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.04)";
           e.currentTarget.style.transform   = "translateY(0)";
         }}
       >
@@ -113,7 +115,8 @@ function WebResultCard({ item }) {
           }}>S</div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <p style={{
-              fontSize: 14, fontWeight: 600, color: "rgba(255,255,255,0.88)",
+              fontSize: 14, fontWeight: 600,
+              color: L ? "#1e293b" : "rgba(255,255,255,0.88)",
               marginBottom: 4, lineHeight: 1.4,
             }}
               dangerouslySetInnerHTML={{ __html: item.title }}
@@ -122,21 +125,22 @@ function WebResultCard({ item }) {
               {item.tags.map(t => (
                 <span key={t} style={{
                   fontSize: 11, padding: "2px 8px", borderRadius: 100,
-                  background: "rgba(124,58,237,0.2)", color: "#a78bfa",
-                  border: "1px solid rgba(124,58,237,0.3)",
+                  background: L ? "rgba(109,40,217,0.10)" : "rgba(124,58,237,0.2)",
+                  color: L ? "#5b21b6" : "#a78bfa",
+                  border: L ? "1px solid rgba(109,40,217,0.20)" : "1px solid rgba(124,58,237,0.3)",
                 }}>{t}</span>
               ))}
-              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
+              <span style={{ fontSize: 11, color: L ? "#64748b" : "rgba(255,255,255,0.3)" }}>
                 {item.answers} answer{item.answers !== 1 ? "s" : ""}
                 {item.answered && " ✓"}
               </span>
-              <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>
+              <span style={{ fontSize: 11, color: L ? "#64748b" : "rgba(255,255,255,0.3)" }}>
                 ▲ {item.score}
               </span>
             </div>
           </div>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, opacity: 0.35, marginTop: 2 }}>
-            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" stroke={L ? "#334155" : "white"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
       </div>
@@ -180,6 +184,9 @@ export default function Library() {
 
   const clearWeb = () => { setWebResults(null); setWebQuery(""); };
 
+  const { theme } = useTheme();
+  const L = theme === "light";
+
   return (
     <div className="library-page">
       <Navbar />
@@ -187,7 +194,7 @@ export default function Library() {
       {/* Hero */}
       <div className="library-hero">
         <h1>Debugging, <em style={{ fontStyle:"italic", background:"linear-gradient(135deg,#a78bfa,#60a5fa)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", backgroundClip:"text" }}>indexed.</em></h1>
-        <p>Real production failures, turned into mental models. Browse by category or search by keyword — or <strong style={{ color: "rgba(255,255,255,0.7)" }}>press Enter</strong> to search the internet.</p>
+        <p>Real production failures, turned into mental models. Browse by category or search by keyword — or <strong style={{ color: L ? "#5b21b6" : "rgba(255,255,255,0.7)" }}>press Enter</strong> to search the internet.</p>
 
         <div className="search-bar">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -202,7 +209,7 @@ export default function Library() {
           />
           {search && (
             <button onClick={() => { setSearch(""); clearWeb(); }}
-              style={{ background:"none",border:"none",color:"rgba(255,255,255,0.35)",cursor:"pointer",fontSize:16,padding:"0 4px" }}>
+              style={{ background:"none",border:"none",color: L ? "#64748b" : "rgba(255,255,255,0.35)",cursor:"pointer",fontSize:16,padding:"0 4px" }}>
               ✕
             </button>
           )}
@@ -210,8 +217,8 @@ export default function Library() {
 
         {/* Hint */}
         {search && !webResults && !webLoading && (
-          <p style={{ position:"relative", fontSize:"12px", color:"rgba(255,255,255,0.3)", marginTop:"8px" }}>
-            Press <kbd style={{ background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.12)", borderRadius:4, padding:"1px 5px", fontSize:11 }}>Enter</kbd> to search the internet for "{search}"
+          <p style={{ position:"relative", fontSize:"12px", color: L ? "#64748b" : "rgba(255,255,255,0.3)", marginTop:"8px" }}>
+            Press <kbd style={{ background: L ? "rgba(0,0,0,0.06)" : "rgba(255,255,255,0.08)", border: L ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.12)", borderRadius:4, padding:"1px 5px", fontSize:11 }}>Enter</kbd> to search the internet for "{search}"
           </p>
         )}
       </div>
@@ -228,14 +235,14 @@ export default function Library() {
 
         {/* Local bug cards */}
         {filtered.length === 0 && !webResults ? (
-          <div style={{ textAlign:"center", padding:"40px 0 20px", color:"rgba(255,255,255,0.3)", fontSize:14 }}>
+          <div style={{ textAlign:"center", padding:"40px 0 20px", color: L ? "#64748b" : "rgba(255,255,255,0.3)", fontSize:14 }}>
             No local results for "{search}". Press <strong>Enter</strong> to search the internet.
           </div>
         ) : (
           <>
             {/* compact label when web results are showing */}
             {webResults && filtered.length > 0 && (
-              <p style={{ fontSize:11, fontWeight:600, color:"rgba(255,255,255,0.3)", textTransform:"uppercase", letterSpacing:".06em", marginBottom:10 }}>
+              <p style={{ fontSize:11, fontWeight:600, color: L ? "#94a3b8" : "rgba(255,255,255,0.3)", textTransform:"uppercase", letterSpacing:".06em", marginBottom:10 }}>
                 Local · {filtered.length} match{filtered.length !== 1 ? "es" : ""}
               </p>
             )}
@@ -269,8 +276,8 @@ export default function Library() {
                   <div key={bug.id}
                     onClick={() => setSelectedBug(bug)}
                     style={{
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.09)",
+                      background: L ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.04)",
+                      border: L ? "1px solid rgba(0,0,0,0.09)" : "1px solid rgba(255,255,255,0.09)",
                       borderRadius: 10,
                       padding: "10px 14px",
                       cursor: "pointer",
@@ -279,13 +286,13 @@ export default function Library() {
                       alignItems: "center",
                       gap: 10,
                     }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor="rgba(167,139,250,0.4)"; e.currentTarget.style.background="rgba(255,255,255,0.07)"; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor="rgba(255,255,255,0.09)"; e.currentTarget.style.background="rgba(255,255,255,0.04)"; }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor="rgba(109,40,217,0.35)"; e.currentTarget.style.background= L ? "rgba(109,40,217,0.06)" : "rgba(255,255,255,0.07)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor= L ? "rgba(0,0,0,0.09)" : "rgba(255,255,255,0.09)"; e.currentTarget.style.background= L ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.04)"; }}
                   >
                     <div style={{ flex:1, minWidth:0 }}>
                       <p style={{
                         fontSize: 13, fontWeight: 600,
-                        color: "rgba(255,255,255,0.85)",
+                        color: L ? "#1e293b" : "rgba(255,255,255,0.85)",
                         whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                         marginBottom: 4,
                       }}>{bug.title}</p>
@@ -293,13 +300,14 @@ export default function Library() {
                         {bug.tags.map(t => (
                           <span key={t} style={{
                             fontSize: 10, padding: "1px 7px", borderRadius: 100,
-                            background: "rgba(124,58,237,0.2)", color: "#a78bfa",
-                            border: "1px solid rgba(124,58,237,0.25)",
+                            background: L ? "rgba(109,40,217,0.10)" : "rgba(124,58,237,0.2)",
+                            color: L ? "#5b21b6" : "#a78bfa",
+                            border: L ? "1px solid rgba(109,40,217,0.20)" : "1px solid rgba(124,58,237,0.25)",
                           }}>{t}</span>
                         ))}
                       </div>
                     </div>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2.5">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={L ? "rgba(0,0,0,0.25)" : "rgba(255,255,255,0.25)"} strokeWidth="2.5">
                       <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
@@ -324,13 +332,13 @@ export default function Library() {
                     <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35" strokeLinecap="round"/>
                   </svg>
                 </div>
-                <h3 style={{ fontSize:16, fontWeight:600, color:"rgba(255,255,255,0.85)" }}>
-                  Web results for <em style={{ fontStyle:"normal", color:"#a78bfa" }}>"{webQuery}"</em>
+                <h3 style={{ fontSize:16, fontWeight:600, color: L ? "#1e293b" : "rgba(255,255,255,0.85)" }}>
+                  Web results for <em style={{ fontStyle:"normal", color: L ? "#7c3aed" : "#a78bfa" }}>"{webQuery}"</em>
                 </h3>
               </div>
               <button onClick={clearWeb} style={{
-                background:"none", border:"1px solid rgba(255,255,255,0.1)",
-                borderRadius:8, color:"rgba(255,255,255,0.4)", cursor:"pointer",
+                background:"none", border: L ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.1)",
+                borderRadius:8, color: L ? "#64748b" : "rgba(255,255,255,0.4)", cursor:"pointer",
                 fontSize:12, padding:"4px 10px", fontFamily:"Inter,sans-serif",
               }}>Clear</button>
             </div>
@@ -354,15 +362,16 @@ export default function Library() {
                 {/* DDG abstract */}
                 {webResults.ddg && (
                   <div style={{
-                    background:"rgba(124,58,237,0.08)", border:"1px solid rgba(124,58,237,0.25)",
+                    background: L ? "rgba(109,40,217,0.06)" : "rgba(124,58,237,0.08)",
+                    border: L ? "1px solid rgba(109,40,217,0.18)" : "1px solid rgba(124,58,237,0.25)",
                     borderRadius:14, padding:"16px 20px", marginBottom:20,
                   }}>
-                    <p style={{ fontSize:12, fontWeight:600, color:"#a78bfa", marginBottom:6, textTransform:"uppercase", letterSpacing:".05em" }}>
+                    <p style={{ fontSize:12, fontWeight:600, color: L ? "#6d28d9" : "#a78bfa", marginBottom:6, textTransform:"uppercase", letterSpacing:".05em" }}>
                       Quick Answer · {webResults.ddg.source}
                     </p>
-                    <p style={{ fontSize:14, color:"rgba(255,255,255,0.75)", lineHeight:1.65 }}>{webResults.ddg.text}</p>
+                    <p style={{ fontSize:14, color: L ? "#334155" : "rgba(255,255,255,0.75)", lineHeight:1.65 }}>{webResults.ddg.text}</p>
                     <a href={webResults.ddg.url} target="_blank" rel="noopener noreferrer"
-                      style={{ fontSize:12, color:"#a78bfa", marginTop:8, display:"inline-block" }}>
+                      style={{ fontSize:12, color: L ? "#6d28d9" : "#a78bfa", marginTop:8, display:"inline-block" }}>
                       Read more →
                     </a>
                   </div>
@@ -371,12 +380,12 @@ export default function Library() {
                 {/* StackOverflow results */}
                 {webResults.stackoverflow?.length > 0 && (
                   <>
-                    <p style={{ fontSize:12, fontWeight:600, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".05em", marginBottom:12 }}>
+                    <p style={{ fontSize:12, fontWeight:600, color: L ? "#64748b" : "rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".05em", marginBottom:12 }}>
                       StackOverflow · {webResults.stackoverflow.length} results
                     </p>
                     <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
                       {webResults.stackoverflow.map((item, i) => (
-                        <WebResultCard key={i} item={item} />
+                        <WebResultCard key={i} item={item} isLight={L} />
                       ))}
                     </div>
                   </>
@@ -385,7 +394,7 @@ export default function Library() {
                 {/* Related topics */}
                 {webResults.related?.length > 0 && (
                   <div style={{ marginTop:24 }}>
-                    <p style={{ fontSize:12, fontWeight:600, color:"rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".05em", marginBottom:12 }}>
+                    <p style={{ fontSize:12, fontWeight:600, color: L ? "#64748b" : "rgba(255,255,255,0.35)", textTransform:"uppercase", letterSpacing:".05em", marginBottom:12 }}>
                       Related Topics
                     </p>
                     <div style={{ display:"flex", flexWrap:"wrap", gap:8 }}>
@@ -394,12 +403,13 @@ export default function Library() {
                           style={{ textDecoration:"none" }}>
                           <span style={{
                             fontSize:12, padding:"6px 14px", borderRadius:100,
-                            background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)",
-                            color:"rgba(255,255,255,0.65)", display:"inline-block",
+                            background: L ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.05)",
+                            border: L ? "1px solid rgba(0,0,0,0.10)" : "1px solid rgba(255,255,255,0.1)",
+                            color: L ? "#475569" : "rgba(255,255,255,0.65)", display:"inline-block",
                             transition:"all .2s", cursor:"pointer",
                           }}
-                            onMouseEnter={e => { e.currentTarget.style.background="rgba(124,58,237,0.2)"; e.currentTarget.style.borderColor="rgba(124,58,237,0.4)"; e.currentTarget.style.color="#a78bfa"; }}
-                            onMouseLeave={e => { e.currentTarget.style.background="rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor="rgba(255,255,255,0.1)"; e.currentTarget.style.color="rgba(255,255,255,0.65)"; }}
+                            onMouseEnter={e => { e.currentTarget.style.background="rgba(109,40,217,0.12)"; e.currentTarget.style.borderColor="rgba(109,40,217,0.35)"; e.currentTarget.style.color= L ? "#5b21b6" : "#a78bfa"; }}
+                            onMouseLeave={e => { e.currentTarget.style.background= L ? "rgba(0,0,0,0.04)" : "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor= L ? "rgba(0,0,0,0.10)" : "rgba(255,255,255,0.1)"; e.currentTarget.style.color= L ? "#475569" : "rgba(255,255,255,0.65)"; }}
                           >
                             {r.title}
                           </span>
@@ -410,7 +420,7 @@ export default function Library() {
                 )}
 
                 {webResults.stackoverflow?.length === 0 && !webResults.ddg && (
-                  <p style={{ color:"rgba(255,255,255,0.3)", fontSize:14, padding:"20px 0" }}>
+                  <p style={{ color: L ? "#94a3b8" : "rgba(255,255,255,0.3)", fontSize:14, padding:"20px 0" }}>
                     No internet results found for this query. Try different keywords.
                   </p>
                 )}
