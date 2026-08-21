@@ -1,4 +1,4 @@
-// Change this to your Render backend URL when deploying
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+// Production backend on Render
+const API_URL = import.meta.env.VITE_API_URL || "https://synapse-e9mn.onrender.com";
 
 export default API_URL;
