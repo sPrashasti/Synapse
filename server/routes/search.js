@@ -1,9 +1,10 @@
 const express = require("express");
 const router  = express.Router();
+const protect = require("../middleware/auth");
 
 // GET /api/search?q=query
 // Uses StackOverflow API (free, no key) + DuckDuckGo Instant Answers
-router.get("/", async (req, res) => {
+router.get("/", protect, async (req, res) => {
   const q = (req.query.q || "").trim();
   if (!q) return res.json({ stackoverflow: [], ddg: null });
 

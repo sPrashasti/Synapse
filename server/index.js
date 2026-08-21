@@ -12,7 +12,13 @@ const searchRoutes     = require("./routes/search");
 const app = express();
 connectDB();
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "https://synapse-aidebugger.netlify.app",
+    "http://localhost:5173", // local dev
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 
 // Health check endpoint for UptimeRobot (keep-alive)
@@ -27,8 +33,9 @@ app.use("/api/search",      searchRoutes);
 
 // Gemini AI review
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
+const protect = require("./middleware/auth");
 
-app.post("/review", async (req, res) => {
+app.post("/review", protect, async (req, res) => {
   try {
     const { code } = req.body;
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
