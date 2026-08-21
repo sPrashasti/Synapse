@@ -15,6 +15,11 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// Health check endpoint for UptimeRobot (keep-alive)
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
+});
+
 app.use("/api/auth",        authRoutes);
 app.use("/api/collections", collectionRoutes);
 app.use("/api/reviews",     reviewRoutes);
